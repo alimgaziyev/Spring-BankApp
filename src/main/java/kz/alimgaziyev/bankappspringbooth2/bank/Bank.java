@@ -14,6 +14,7 @@ import kz.alimgaziyev.bankappspringbooth2.services.listingtransactions.Transacti
 import kz.alimgaziyev.bankappspringbooth2.services.withdrawservice.AccountWithdrawService;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.NonFinal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,24 +23,20 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 @Builder
 @Data
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class Bank {
     static Long bank_id = 1l;
     static Long clientId = 1l;
+    @NonFinal
     static Long lastBankAccountNumber = 1l;
-    @Autowired
     AccountCreationService accountCreationService;
-    @Autowired
     AccountDeleteService accountDeleteService;
-    @Autowired
     AccountListingService accountListingService;
-    @Autowired
     AccountWithdrawService accountWithdrawService;
-    @Autowired
     AccountDepositService accountDepositService;
-    @Autowired
     TransactionListingService transactionListingService;
 
 
@@ -83,7 +80,7 @@ public class Bank {
             accountDeleteService.delete(accountId);
             ans = ResponseEntity.status(HttpStatus.OK).body(String.format("%s, Account id is %s", Messages.ACCOUNT_DELETED, accountId));
         } catch (Exception e) {
-            ans = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Messages.ACCOUNT_NOT_DELETED);
+            ans = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Messages.ACCOUNT_NOT_FOUNDED);
         }
         return ans;
     }

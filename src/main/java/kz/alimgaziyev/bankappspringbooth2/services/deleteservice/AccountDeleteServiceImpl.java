@@ -17,7 +17,7 @@ public class AccountDeleteServiceImpl implements AccountDeleteService {
     TransactionDOA transactionDOA;
     @Override
     public void delete(String accountId) {
-        accountDAO.deleteAccountByAccountId(accountId);
+        accountDAO.delete(accountDAO.findAccountByAccountId(accountId));
         transactionDOA.deleteTransactionsByAccountId(accountId);
     }
 }

@@ -34,25 +34,21 @@ public class AccountWithdrawServiceImpl implements AccountWithdrawService {
             }
         Double current = account.getBalance();
         ResponseEntity<String> ans;
+        Transaction transaction = Transaction.builder()
+                .accountId(accountId)
+                .amount(amount)
+                .transactionType(TransactionType.WITHDRAW)
+                .date(LocalDate.now().toString())
+                .build();
         if (amount > 0.0 && current - amount >= 0.0) {
             account.setBalance(current - amount);
             accountDAO.save(account);
-            transactionDOA.save(Transaction.builder()
-                        .accountId(accountId)
-                        .amount(amount)
-                        .transactionType(TransactionType.WITHDRAW)
-                        .date(LocalDate.now().toString())
-                        .isTransferred(true)
-                    .build());
+            transaction.setTransferred(true);
+            transactionDOA.save(transaction);
             ans = ResponseEntity.status(HttpStatus.OK).body(String.format("withdraw from %s %s $%.2f", accountId, Messages.ACCOUNT_TRANSACTION_OK, amount));
         } else {
-            transactionDOA.save(Transaction.builder()
-                    .accountId(accountId)
-                    .amount(amount)
-                    .transactionType(TransactionType.WITHDRAW)
-                    .date(LocalDate.now().toString())
-                    .isTransferred(false)
-                    .build());
+            transaction.setTransferred(false);
+            transactionDOA.save(transaction);
             ans = ResponseEntity.status(HttpStatus.OK).body(String.format("%s from id = %s NOT Enough money", Messages.ACCOUNT_TRANSACTION_FAILED, accountId));
         }
         return ans;

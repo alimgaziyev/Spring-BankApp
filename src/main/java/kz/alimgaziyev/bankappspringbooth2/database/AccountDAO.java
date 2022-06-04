@@ -6,12 +6,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
 import java.util.List;
 
-@Repository
+@Component
 public interface AccountDAO extends CrudRepository<Account, String> {
     List<Account> findAccountsByClientId(String clientId);
     List<Account> findAccountsByAccountType(AccountType accountType);
