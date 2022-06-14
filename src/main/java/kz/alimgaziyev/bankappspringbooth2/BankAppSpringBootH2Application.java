@@ -9,7 +9,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Configuration;
 
 @SpringBootApplication
-@SecurityScheme(name = "basicauth", scheme = "bearer", type = SecuritySchemeType.HTTP, in = SecuritySchemeIn.HEADER, bearerFormat = "JWT")
+@SecurityScheme(name = "basicauth",
+				scheme = "bearer",
+				type = SecuritySchemeType.HTTP,
+				in = SecuritySchemeIn.HEADER,
+				bearerFormat = "JWT")
 public class BankAppSpringBootH2Application {
 	public static void main(String[] args) {
 		SpringApplication.run(BankAppSpringBootH2Application.class, args);
