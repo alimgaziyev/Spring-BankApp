@@ -9,5 +9,5 @@ import java.util.List;
 
 @Service
 public interface TransactionListingService {
-    public ResponseEntity<List<TransactionDto>> getTransactionsByAccountId(String accountId);
+    public ResponseEntity<List<TransactionDto>> getTransactionsByAccountIdAndClientId(String accountId, String clientId);
 }

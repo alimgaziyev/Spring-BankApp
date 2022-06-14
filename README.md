@@ -25,7 +25,7 @@
             (c) Bank
 
         +- database                                                 / repesitories /
-                (i) AccountDAO extends CrudRepository
+                (i) accountRepo extends CrudRepository
                 (i) TreansactionDAO extends CrudRepository
 
         +- services

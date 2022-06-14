@@ -1,7 +1,7 @@
 package kz.alimgaziyev.bankappspringbooth2.services.listingtransactions;
 
 import kz.alimgaziyev.bankappspringbooth2.bank.transaction.Transaction;
-import kz.alimgaziyev.bankappspringbooth2.database.TransactionDOA;
+import kz.alimgaziyev.bankappspringbooth2.repository.TransactionRepo;
 import kz.alimgaziyev.bankappspringbooth2.dto.TransactionDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,12 +14,12 @@ import java.util.List;
 @Service
 public class TransactionListingServiceImpl implements TransactionListingService {
     @Autowired
-    TransactionDOA transactionDOA;
+    TransactionRepo transactionRepo;
     @Override
-    public ResponseEntity<List<TransactionDto>> getTransactionsByAccountId(String accountId) {
+    public ResponseEntity<List<TransactionDto>> getTransactionsByAccountIdAndClientId(String accountId, String clientId) {
         List<Transaction> transactions;
         ResponseEntity<List<TransactionDto>> ans;
-        transactions = transactionDOA.findTransactionsByAccountId(accountId);
+        transactions = transactionRepo.findTransactionsByAccountIdAndClientId(accountId, clientId);
             if (transactions == null) {
                 ans = ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
             } else {

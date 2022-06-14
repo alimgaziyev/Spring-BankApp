@@ -4,6 +4,7 @@ import kz.alimgaziyev.bankappspringbooth2.bank.account.Account;
 import kz.alimgaziyev.bankappspringbooth2.bank.transaction.Transaction;
 import kz.alimgaziyev.bankappspringbooth2.dto.AccountDto;
 import kz.alimgaziyev.bankappspringbooth2.dto.TransactionDto;
+import kz.alimgaziyev.bankappspringbooth2.dto.TransferDto;
 import kz.alimgaziyev.bankappspringbooth2.dto.WithdrawDepositDto;
 import kz.alimgaziyev.bankappspringbooth2.requestoutput.Messages;
 import kz.alimgaziyev.bankappspringbooth2.services.creationservice.AccountCreationService;
@@ -11,6 +12,7 @@ import kz.alimgaziyev.bankappspringbooth2.services.deleteservice.AccountDeleteSe
 import kz.alimgaziyev.bankappspringbooth2.services.depositservice.AccountDepositService;
 import kz.alimgaziyev.bankappspringbooth2.services.listingservice.AccountListingService;
 import kz.alimgaziyev.bankappspringbooth2.services.listingtransactions.TransactionListingService;
+import kz.alimgaziyev.bankappspringbooth2.services.transferservice.TransferService;
 import kz.alimgaziyev.bankappspringbooth2.services.withdrawservice.AccountWithdrawService;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -28,8 +30,8 @@ import java.util.List;
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class Bank {
+    @NonFinal
     static Long bank_id = 1l;
-    static Long clientId = 1l;
     @NonFinal
     static Long lastBankAccountNumber = 1l;
     AccountCreationService accountCreationService;
@@ -38,6 +40,7 @@ public class Bank {
     AccountWithdrawService accountWithdrawService;
     AccountDepositService accountDepositService;
     TransactionListingService transactionListingService;
+    TransferService transferService;
 
 
     public ResponseEntity<List<Account>> getClientAccounts(Long clientId) {
@@ -74,10 +77,10 @@ public class Bank {
         }
         return ans;
     }
-    public ResponseEntity<String> deleteAccount(String accountId) {
+    public ResponseEntity<String> deleteAccount(String accountId, Long clientId) {
         ResponseEntity<String> ans;
         try {
-            accountDeleteService.delete(accountId);
+            accountDeleteService.delete(accountId, clientId.toString());
             ans = ResponseEntity.status(HttpStatus.OK).body(String.format("%s, Account id is %s", Messages.ACCOUNT_DELETED, accountId));
         } catch (Exception e) {
             ans = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Messages.ACCOUNT_NOT_FOUNDED);
@@ -85,14 +88,29 @@ public class Bank {
         return ans;
     }
     public ResponseEntity<String> withdrawOperation(String accountId, WithdrawDepositDto withdrawDto) {
-        return accountWithdrawService.withdraw(accountId, clientId.toString(), withdrawDto.getAmount());
+        return accountWithdrawService.withdraw(accountId, withdrawDto.getClientId().toString(), withdrawDto.getAmount());
     }
     public ResponseEntity<String> depositOperation(String accountId, WithdrawDepositDto withdrawDto) {
-        return accountDepositService.deposit(accountId, clientId.toString(), withdrawDto.getAmount());
+        return accountDepositService.deposit(accountId, withdrawDto.getClientId().toString(), withdrawDto.getAmount());
     }
-    public ResponseEntity<List<TransactionDto>> getTransactionsByAccountId(String accountId) {
-        return transactionListingService.getTransactionsByAccountId(accountId);
+    public ResponseEntity<List<TransactionDto>> getTransactionsByAccountIdAndClientId(String accountId, Long clientId) {
+        return transactionListingService.getTransactionsByAccountIdAndClientId(accountId, clientId.toString());
     }
+
+    public ResponseEntity<?> transferFromOneToAnotherAccount(Long clientId, String accountId, TransferDto transferDto) {
+        ResponseEntity<?> ans;
+        try {
+            transferService.transferFromOneToAnotherAccount(clientId.toString(),
+                                                            accountId,
+                                                            transferDto.getToAccountId(),
+                                                            transferDto.getAmount());
+            ans = ResponseEntity.ok("Transferred");
+        } catch(Exception e) {
+            ans = ResponseEntity.badRequest().body("Operation failed");
+        }
+        return ans;
+    }
+
     private void incrementLastAccountNumber() {
         lastBankAccountNumber++;
     }

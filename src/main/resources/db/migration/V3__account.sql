@@ -1,5 +1,5 @@
 CREATE TABLE Account (
-    id INTEGER NOT NULL primary key,
+    id IDENTITY NOT NULL primary key,
     account_id NVARCHAR(80) NOT NULL,
     client_id NVARCHAR(80)  NOT NULL,
     balance DOUBLE  NOT NULL,

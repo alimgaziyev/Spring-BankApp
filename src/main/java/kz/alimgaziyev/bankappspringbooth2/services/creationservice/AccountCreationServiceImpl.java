@@ -1,10 +1,9 @@
 package kz.alimgaziyev.bankappspringbooth2.services.creationservice;
 
 import kz.alimgaziyev.bankappspringbooth2.bank.account.Account;
-import kz.alimgaziyev.bankappspringbooth2.database.AccountDAO;
+import kz.alimgaziyev.bankappspringbooth2.repository.AccountRepo;
 import kz.alimgaziyev.bankappspringbooth2.bank.account.AccountType;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,7 @@ import org.springframework.stereotype.Service;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AccountCreationServiceImpl implements AccountCreationService {
     @Autowired
-    AccountDAO accountDAO;
+    AccountRepo accountRepo;
     @Override
     public void create(String accountId, String clientId, AccountType accountType) {
         try {
@@ -25,7 +24,7 @@ public class AccountCreationServiceImpl implements AccountCreationService {
                                         .accountType(accountType)
                                         .isWithdrawAllowed(accountType.isWithdrawAllowed())
                                     .build();
-            accountDAO.save(account);
+            accountRepo.save(account);
         } catch (Exception e) {
             System.out.println(e);
         }

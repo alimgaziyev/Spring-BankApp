@@ -3,10 +3,7 @@ package kz.alimgaziyev.bankappspringbooth2.bank.account;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 
 @Data
@@ -17,13 +14,14 @@ import javax.persistence.Table;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Account {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     String accountId;
     String clientId;
     @Builder.Default
     Double balance = 0.0;
     AccountType accountType;
+    @Column(name = "withdraw_allowed")
     Boolean isWithdrawAllowed;
 
     @Override

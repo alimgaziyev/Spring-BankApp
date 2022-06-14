@@ -16,10 +16,12 @@ public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
+    String clientId;
     String accountId;
     TransactionType transactionType;
     Double amount;
     String date;
+    @Column(name = "is_transferred")
     boolean isTransferred;
 
     @Override

@@ -1,8 +1,7 @@
 package kz.alimgaziyev.bankappspringbooth2.services.deleteservice;
 
-import kz.alimgaziyev.bankappspringbooth2.bank.transaction.Transaction;
-import kz.alimgaziyev.bankappspringbooth2.database.AccountDAO;
-import kz.alimgaziyev.bankappspringbooth2.database.TransactionDOA;
+import kz.alimgaziyev.bankappspringbooth2.repository.AccountRepo;
+import kz.alimgaziyev.bankappspringbooth2.repository.TransactionRepo;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,12 +11,12 @@ import org.springframework.stereotype.Service;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AccountDeleteServiceImpl implements AccountDeleteService {
     @Autowired
-    AccountDAO accountDAO;
+    AccountRepo accountRepo;
     @Autowired
-    TransactionDOA transactionDOA;
+    TransactionRepo transactionRepo;
     @Override
-    public void delete(String accountId) {
-        accountDAO.delete(accountDAO.findAccountByAccountId(accountId));
-        transactionDOA.deleteTransactionsByAccountId(accountId);
+    public void delete(String accountId, String clientId) {
+        accountRepo.delete(accountRepo.findAccountByAccountIdAndClientId(accountId, clientId));
+        transactionRepo.deleteTransactionsByAccountId(accountId);
     }
 }

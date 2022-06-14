@@ -1,19 +1,15 @@
-package kz.alimgaziyev.bankappspringbooth2.database;
+package kz.alimgaziyev.bankappspringbooth2.repository;
 
 import kz.alimgaziyev.bankappspringbooth2.bank.account.Account;
 import kz.alimgaziyev.bankappspringbooth2.bank.account.AccountType;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
 import java.util.List;
 
-@Component
-public interface AccountDAO extends CrudRepository<Account, String> {
+@Repository
+public interface AccountRepo extends CrudRepository<Account, String> {
     List<Account> findAccountsByClientId(String clientId);
     List<Account> findAccountsByAccountType(AccountType accountType);
     Account findAccountByAccountIdAndIsWithdrawAllowed(String accountId, boolean isWithdrawAllowed);

@@ -1,5 +1,6 @@
 CREATE TABLE Transaction (
-    id INTEGER not null PRIMARY KEY,
+    id IDENTITY not null PRIMARY KEY,
+    client_id NVARCHAR(40) NOT NULL,
     account_id NVARCHAR(40) NOT NULL,
     transaction_type NVARCHAR(80) NOT NULL,
     amount DOUBLE NOT NULL,

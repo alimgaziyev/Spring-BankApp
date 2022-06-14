@@ -1,6 +1,14 @@
 package kz.alimgaziyev.bankappspringbooth2.requestoutput;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+@AllArgsConstructor
+@ResponseBody
+@Data
 public class Messages {
+    private String message;
     public static String ACCOUNT_CREATED = "Account created";
     public static String ACCOUNT_NOT_CREATED = "Account not created";
     public static String ACCOUNT_DELETED = "Account deleted";

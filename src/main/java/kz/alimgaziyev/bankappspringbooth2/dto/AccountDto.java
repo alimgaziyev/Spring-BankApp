@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class AccountDto {
-    Integer clientId;
+    Long clientId;
     String accountType;
 
     public String getClientId() {

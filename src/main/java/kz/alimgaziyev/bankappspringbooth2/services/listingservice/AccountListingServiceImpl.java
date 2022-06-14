@@ -1,6 +1,6 @@
 package kz.alimgaziyev.bankappspringbooth2.services.listingservice;
 
-import kz.alimgaziyev.bankappspringbooth2.database.AccountDAO;
+import kz.alimgaziyev.bankappspringbooth2.repository.AccountRepo;
 import kz.alimgaziyev.bankappspringbooth2.bank.account.Account;
 import org.springframework.stereotype.Service;
 
@@ -8,32 +8,32 @@ import java.util.List;
 
 @Service
 public class AccountListingServiceImpl implements AccountListingService {
-    private AccountDAO accountDAO;
+    private AccountRepo accountRepo;
 
-    public AccountListingServiceImpl(AccountDAO accountDAO) {
-        this.accountDAO = accountDAO;
+    public AccountListingServiceImpl(AccountRepo accountRepo) {
+        this.accountRepo = accountRepo;
     }
 
     @Override
     public List<Account> getClientAccounts(String clientId) {
-        return accountDAO.findAccountsByClientId(clientId);
+        return accountRepo.findAccountsByClientId(clientId);
     }
 
     @Override
     public Account getClientWithdrawAccount(String accountId, String clientId) {
-        Account account = accountDAO.findAccountByAccountIdAndClientId(accountId, clientId);
+        Account account = accountRepo.findAccountByAccountIdAndClientId(accountId, clientId);
         if (account.getIsWithdrawAllowed()) return account;
         return null;
     }
 
     @Override
     public Account getClientAccount(String accountId, String clientId) {
-        return accountDAO.findAccountByAccountIdAndClientId(accountId, clientId);
+        return accountRepo.findAccountByAccountIdAndClientId(accountId, clientId);
     }
 
     @Override
     public Account getAccount(String accountId) {
-        return accountDAO.findById(accountId).get();
+        return accountRepo.findAccountByAccountId(accountId);
     }
 
     @Override
