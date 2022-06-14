@@ -5,9 +5,8 @@ import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
 
-
-@Data
 @Entity
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -16,10 +15,14 @@ public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
+    @Column(name = "account_id")
     String accountId;
+    @Column(name = "client_id")
     String clientId;
     @Builder.Default
+    @Column(name = "balance")
     Double balance = 0.0;
+    @Column(name = "account_type")
     AccountType accountType;
     @Column(name = "withdraw_allowed")
     Boolean isWithdrawAllowed;
@@ -32,13 +35,10 @@ public class Account {
                 balance,
                 accountType);
     }
-
     public void setId(Long id) {
         this.id = id;
     }
-
-    public Long getId() {
-        return id;
+    public void setBalance(Double balance) {
+        this.balance = balance;
     }
-
 }
